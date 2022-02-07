@@ -13,6 +13,14 @@ public class Main {
 
         FileGenerator.generateFile(file1, uniqueChars, p1, textSizeInChars);
         FileGenerator.generateFile(file2, uniqueChars, p2, textSizeInChars);
+// file1: oneChar = 2.321928, twoChars =
+// file2: oneChar = 2.1332061, twoChars =
+        /*int var1 = 20;
+        float sum = 0;
+        for (int i = 1; i <= 5; i++) {
+            sum += -1 * ((p2[i - 1] / 100.0) * Entropy.log2((p2[i - 1] / 100.0f)));
+        }
+        System.out.println(sum);*/
 
         displayLab1();
     }
@@ -31,4 +39,25 @@ public class Main {
         System.out.print("Файл №2: ");
         System.out.println(Entropy.Shanon("second.txt", 2));
     }
+
+    /*public static void PrintLab2() throws IOException {
+        System.out.println("\nЛаб.раб. №2:");
+        System.out.println("\tПроверка на отрывке книги:");
+        System.out.println("Текст\t\t\t1 символ \t\t 2 символа \t 3 символа \t 4 символв \t 5 символв");
+        FileGenerator.generateText("littlePrince.txt");
+        FileGenerator.generateText("mumu.txt");
+
+        System.out.println("littlePrince\t"
+                + Entropy.Shanon("littlePrince.txt.out", 1) + "\t\t "
+                + Entropy.Shanon("littlePrince.txt.out", 2) + " \t "
+                + Entropy.Shanon("littlePrince.txt.out", 3) + " \t "
+                + Entropy.Shanon("littlePrince.txt.out", 4) + " \t "
+                + Entropy.Shanon("littlePrince.txt.out", 5));
+        System.out.println("mumu\t\t\t"
+                + Entropy.Shanon("mumu.txt.out", 1) + " \t\t "
+                + Entropy.Shanon("mumu.txt.out", 2) + " \t "
+                + Entropy.Shanon("mumu.txt.out", 3) + " \t "
+                + Entropy.Shanon("mumu.txt.out", 4) + " \t "
+                + Entropy.Shanon("mumu.txt.out", 5));
+    }*/
 }

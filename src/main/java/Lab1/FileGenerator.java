@@ -30,4 +30,53 @@ public class FileGenerator {
         }
         return probs.length - 1;
     }
+
+    /*public static String removeChar(String s, char c) {
+        StringBuilder r = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) != c) r.append(s.charAt(i));
+        }
+        return r.toString();
+    }
+
+    public static void generateText(String filename) throws IOException {
+        File fileIn = new File(filename);
+        File fileOut = new File(filename + ".out");
+        FileInputStream fin = new FileInputStream(fileIn);
+        FileOutputStream fout = new FileOutputStream(fileOut);
+        BufferedReader buf = new BufferedReader(new InputStreamReader(fin));
+        String str = "";
+        char[] symbs = {',', '.', '!', '?', '-', ';', ':', '\'', '\"', '…', '«', '»', '(', ')'};
+
+        while ((str = buf.readLine()) != null) {
+            str = str.toLowerCase();
+            str = str.replaceAll("[^а-я]", "");
+            str = str.replace('ъ', 'ь');
+            str = str.replace('ё', 'е');
+            str = str + " ";
+
+            for (char c : symbs) {
+                str = removeChar(str, c);
+            }
+
+//            System.out.println(str);
+            fout.write(str.getBytes());
+        }
+        fout.close();
+    }
+
+    public static void genSourceFile(String filename) throws IOException {
+        File fileIn = new File(filename);
+        File fileOut = new File("sourceFile.txt");
+        FileInputStream fin = new FileInputStream(fileIn);
+        FileOutputStream fout = new FileOutputStream(fileOut);
+        BufferedReader buf = new BufferedReader(new InputStreamReader(fin));
+        String str = "";
+
+        while ((str = buf.readLine()) != null) {
+            fout.write(str.getBytes());
+        }
+
+        fout.close();
+    }*/
 }
