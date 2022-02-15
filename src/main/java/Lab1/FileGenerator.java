@@ -31,7 +31,7 @@ public class FileGenerator {
         return probs.length - 1;
     }
 
-    /*public static String removeChar(String s, char c) {
+    public static String removeChar(String s, char c) {
         StringBuilder r = new StringBuilder();
         for (int i = 0; i < s.length(); i++) {
             if (s.charAt(i) != c) r.append(s.charAt(i));
@@ -41,31 +41,31 @@ public class FileGenerator {
 
     public static void generateText(String filename) throws IOException {
         File fileIn = new File(filename);
-        File fileOut = new File(filename + ".out");
+        File fileOut = new File(filename + ".new");
         FileInputStream fin = new FileInputStream(fileIn);
         FileOutputStream fout = new FileOutputStream(fileOut);
         BufferedReader buf = new BufferedReader(new InputStreamReader(fin));
         String str = "";
-        char[] symbs = {',', '.', '!', '?', '-', ';', ':', '\'', '\"', '…', '«', '»', '(', ')'};
 
         while ((str = buf.readLine()) != null) {
+            str = str.trim();
             str = str.toLowerCase();
-            str = str.replaceAll("[^а-я]", "");
-            str = str.replace('ъ', 'ь');
-            str = str.replace('ё', 'е');
             str = str + " ";
 
-            for (char c : symbs) {
-                str = removeChar(str, c);
+            StringBuilder newStr = new StringBuilder();
+            for (int i = 0; i < str.length(); i++) {
+                char tempSymbol = str.charAt(i);
+                if (Character.isSpaceChar(tempSymbol) || Character.isLetter(tempSymbol)) {
+                    newStr.append(tempSymbol);
+                }
             }
 
-//            System.out.println(str);
-            fout.write(str.getBytes());
+            fout.write(newStr.toString().getBytes());
         }
         fout.close();
     }
 
-    public static void genSourceFile(String filename) throws IOException {
+    /*public static void genSourceFile(String filename) throws IOException {
         File fileIn = new File(filename);
         File fileOut = new File("sourceFile.txt");
         FileInputStream fin = new FileInputStream(fileIn);

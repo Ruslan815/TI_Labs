@@ -1,0 +1,138 @@
+package Lab1;
+
+import java.io.IOException;
+
+public class Main {
+    public static void main(String[] args) throws IOException {
+        String file1 = "first.txt";
+        String file2 = "second.txt";
+        int textSizeInChars = 10_250;
+        char[] uniqueChars = new char[]{'1', '2', '3', '4', '5'};
+        int[] p1 = new int[]{20, 20, 20, 20, 20};
+        int[] p2 = new int[]{30, 30, 20, 15, 5}; // 0,3*1.736 + 0,3*1.736 + 0,2*2.322 + 0,15*2.736 + 0,05*4.322 = 1,0416 + 0,4644 + 0,4104 + 0,2161 = 2,1325
+
+        FileGenerator.generateFile(file1, uniqueChars, p1, textSizeInChars);
+        FileGenerator.generateFile(file2, uniqueChars, p2, textSizeInChars);
+// file1: oneChar = 2.321928, twoChars =
+// file2: oneChar = 2.1332061, twoChars =
+        /*int var1 = 20;
+        float sum = 0;
+        for (int i = 1; i <= 5; i++) {
+            sum += -1 * ((p2[i - 1] / 100.0) * Entropy.log2((p2[i - 1] / 100.0f)));
+        }
+        System.out.println(sum);*/
+
+        displayLab1();
+    }
+
+    public static void displayLab1() throws IOException {
+        System.out.println("");
+        System.out.print("");
+        System.out.println(Entropy.Shanon("first.txt", 1));
+        System.out.print("");
+        System.out.println(Entropy.Shanon("second.txt", 1));
+        System.out.println();
+
+        System.out.println("");
+        System.out.print("");
+        System.out.println(Entropy.Shanon("first.txt", 2));
+        System.out.print("");
+        System.out.println(Entropy.Shanon("second.txt", 2));
+    }
+}
+
+package Lab1;
+
+import java.io.*;
+import java.util.Random;
+
+public class FileGenerator {
+    public static void generateFile(String fileName, char[] uniqueChars, int[] probs, int textSizeInChars) throws IOException {
+        File file = new File(fileName);
+        FileOutputStream fileOutStream = new FileOutputStream(file);
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < textSizeInChars; i++) {
+            sb.append(uniqueChars[getRandomIndex(probs)]);
+        }
+
+        fileOutStream.write(sb.toString().getBytes());
+        fileOutStream.close();
+    }
+
+    static int getRandomIndex(int[] probs) {
+        Random rnd = new Random();
+        int randomPoint = rnd.nextInt(100);
+
+        for (int i = 0; i < probs.length; i++) {
+            if (randomPoint < probs[i]) {
+                return i;
+            } else {
+                randomPoint -= probs[i];
+            }
+        }
+        return probs.length - 1;
+    }
+}
+
+package Lab1;
+
+import java.io.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
+public class Entropy {
+    private static int charCount;
+
+    public static float Shanon(String file, int strLen) throws IOException {
+        LinkedHashMap<String, Float> H = calculateCharsFrequency(file, strLen); // Entropy = H
+
+        float sum = 0;
+        for (String i : H.keySet()) {
+            float characterProbability = H.get(i) / charCount;
+            H.put(i, (-1) * characterProbability * log2(characterProbability));
+            sum += H.get(i);
+        }
+        if (strLen > 1) {
+            sum /= strLen;
+        }
+
+        return sum;
+    }
+
+    public static LinkedHashMap<String, Float> calculateCharsFrequency(String file, int strLen) throws IOException {
+        File readFile = new File(file);
+        FileInputStream fin = new FileInputStream(readFile);
+        BufferedReader buf = new BufferedReader(new InputStreamReader((fin)));
+        String str = buf.readLine();
+
+        TreeMap<String, Float> P = new TreeMap<>();
+        LinkedHashMap<String, Float> sortedMap = new LinkedHashMap<>();
+
+        charCount = str.length();
+
+        for (int i = 0; i <= charCount - strLen; ++i) {
+            String sub = str.substring(i, i + strLen);
+            if (P.containsKey(sub)) {
+                P.put(sub, P.get(sub) + 1f);
+            } else {
+                P.put(sub, 1f);
+            }
+        }
+
+        P.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue())).forEachOrdered(x -> sortedMap.put(x.getKey(), x.getValue()));
+        return sortedMap;
+    }
+
+    public static float log2(float f) {
+        return (float) (Math.log(f) / Math.log(2.0));
+    }
+
+    public static int getCharCount() {
+        return charCount;
+    }
+}
+
+

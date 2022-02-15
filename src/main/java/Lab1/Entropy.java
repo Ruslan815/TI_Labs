@@ -22,6 +22,9 @@ public class Entropy {
             sum /= strLen;
         }
 
+        System.out.println("Unique symbols count = " + H.size());
+        //System.out.println(H.entrySet());
+
         return sum;
     }
 

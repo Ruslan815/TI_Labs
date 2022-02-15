@@ -9,20 +9,13 @@ public class Main {
         int textSizeInChars = 10_250;
         char[] uniqueChars = new char[]{'1', '2', '3', '4', '5'};
         int[] p1 = new int[]{20, 20, 20, 20, 20};
-        int[] p2 = new int[]{30, 30, 20, 15, 5};
+        int[] p2 = new int[]{30, 30, 20, 15, 5}; // 0,3*1.736 + 0,3*1.736 + 0,2*2.322 + 0,15*2.736 + 0,05*4.322 = 1,0416 + 0,4644 + 0,4104 + 0,2161 = 2,1325
 
         FileGenerator.generateFile(file1, uniqueChars, p1, textSizeInChars);
         FileGenerator.generateFile(file2, uniqueChars, p2, textSizeInChars);
-// file1: oneChar = 2.321928, twoChars =
-// file2: oneChar = 2.1332061, twoChars =
-        /*int var1 = 20;
-        float sum = 0;
-        for (int i = 1; i <= 5; i++) {
-            sum += -1 * ((p2[i - 1] / 100.0) * Entropy.log2((p2[i - 1] / 100.0f)));
-        }
-        System.out.println(sum);*/
 
-        displayLab1();
+        //displayLab1();
+        displayLab2();
     }
 
     public static void displayLab1() throws IOException {
@@ -40,24 +33,18 @@ public class Main {
         System.out.println(Entropy.Shanon("second.txt", 2));
     }
 
-    /*public static void PrintLab2() throws IOException {
+    public static void displayLab2() throws IOException {
         System.out.println("\nЛаб.раб. №2:");
-        System.out.println("\tПроверка на отрывке книги:");
-        System.out.println("Текст\t\t\t1 символ \t\t 2 символа \t 3 символа \t 4 символв \t 5 символв");
-        FileGenerator.generateText("littlePrince.txt");
-        FileGenerator.generateText("mumu.txt");
+        FileGenerator.generateText("JaneEyre.txt");
+        FileGenerator.generateText("lab1Code.txt");
 
-        System.out.println("littlePrince\t"
-                + Entropy.Shanon("littlePrince.txt.out", 1) + "\t\t "
-                + Entropy.Shanon("littlePrince.txt.out", 2) + " \t "
-                + Entropy.Shanon("littlePrince.txt.out", 3) + " \t "
-                + Entropy.Shanon("littlePrince.txt.out", 4) + " \t "
-                + Entropy.Shanon("littlePrince.txt.out", 5));
-        System.out.println("mumu\t\t\t"
-                + Entropy.Shanon("mumu.txt.out", 1) + " \t\t "
-                + Entropy.Shanon("mumu.txt.out", 2) + " \t "
-                + Entropy.Shanon("mumu.txt.out", 3) + " \t "
-                + Entropy.Shanon("mumu.txt.out", 4) + " \t "
-                + Entropy.Shanon("mumu.txt.out", 5));
-    }*/
+        System.out.println("JaneEyre\n"
+                + "1 char = " + Entropy.Shanon("JaneEyre.txt.new", 1) + "\n"
+                + "2 char = " + Entropy.Shanon("JaneEyre.txt.new", 2) + " \n"
+                + "3 char = " + Entropy.Shanon("JaneEyre.txt.new", 3) + " \n");
+        System.out.println("lab1Code\n"
+                + "1 char = " + Entropy.Shanon("lab1Code.txt.new", 1) + " \n"
+                + "2 char = " + Entropy.Shanon("lab1Code.txt.new", 2) + " \n"
+                + "3 char = " + Entropy.Shanon("lab1Code.txt.new", 3) + " \n");
+    }
 }
