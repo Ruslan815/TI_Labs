@@ -64,19 +64,4 @@ public class FileGenerator {
         }
         fout.close();
     }
-
-    /*public static void genSourceFile(String filename) throws IOException {
-        File fileIn = new File(filename);
-        File fileOut = new File("sourceFile.txt");
-        FileInputStream fin = new FileInputStream(fileIn);
-        FileOutputStream fout = new FileOutputStream(fileOut);
-        BufferedReader buf = new BufferedReader(new InputStreamReader(fin));
-        String str = "";
-
-        while ((str = buf.readLine()) != null) {
-            fout.write(str.getBytes());
-        }
-
-        fout.close();
-    }*/
 }
