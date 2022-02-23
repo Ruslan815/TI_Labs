@@ -4,7 +4,8 @@ import java.io.*;
 import java.util.LinkedHashMap;
 
 /**
- * Немного другой алгоритм, чем в классе Coding
+ * Изначальный файл, который был у челов
+ * Немного другой алгоритм, чем в классе Coding (там мой алгоритм)
  */
 
 public class CodingOrig {
