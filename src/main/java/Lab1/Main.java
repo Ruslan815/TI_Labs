@@ -13,9 +13,65 @@ public class Main {
 
         FileGenerator.generateFile(file1, uniqueChars, p1, textSizeInChars);
         FileGenerator.generateFile(file2, uniqueChars, p2, textSizeInChars);
+        FileGenerator.deleteInvalidSymbolsFromFile("JaneEyre.txt");
+        FileGenerator.deleteInvalidSymbolsFromFile("lab1Code.txt");
 
-        //displayLab1();
-        displayLab2();
+        // displayLab1();
+        // displayLab2();
+        displayLab3(file1, file2);
+    }
+
+    public static void displayLab3(String file1, String file2) throws IOException {
+        System.out.println("\nЛаб.раб. №3:");
+
+        // First file
+        Coding.prepareFano(file1, 1);
+        System.out.println("File1\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon(file1 + ".enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon(file1 + ".enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon(file1 + ".enc", 3) + " \n");
+
+        // Second File
+        Coding.prepareFano(file2, 1);
+        System.out.println("File2\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon(file2 + ".enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon(file2 + ".enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon(file2 + ".enc", 3) + " \n");
+
+        // Jane Eyre
+        Coding.prepareFano("JaneEyre.txt.new", 1);
+        System.out.println("JaneEyre\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.new.enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 3) + " \n");
+
+
+        // Lab 1 Code
+        Coding.prepareFano("lab1Code.txt.new", 1);
+        System.out.println("lab1Code\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon("lab1Code.txt.new.enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("lab1Code.txt.new.enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("lab1Code.txt.new.enc", 3) + " \n");
+
+    }
+
+    public static void displayLab2() throws IOException {
+        System.out.println("\nЛаб.раб. №2:");
+        FileGenerator.deleteInvalidSymbolsFromFile("JaneEyre.txt");
+        FileGenerator.deleteInvalidSymbolsFromFile("lab1Code.txt");
+
+        System.out.println("JaneEyre\n"
+                + "1 char = " + Entropy.Shanon("JaneEyre.txt.new", 1) + "\n"
+                + "2 char = " + Entropy.Shanon("JaneEyre.txt.new", 2) + " \n"
+                + "3 char = " + Entropy.Shanon("JaneEyre.txt.new", 3) + " \n");
+        System.out.println("lab1Code\n"
+                + "1 char = " + Entropy.Shanon("lab1Code.txt.new", 1) + " \n"
+                + "2 char = " + Entropy.Shanon("lab1Code.txt.new", 2) + " \n"
+                + "3 char = " + Entropy.Shanon("lab1Code.txt.new", 3) + " \n");
     }
 
     public static void displayLab1() throws IOException {
@@ -31,20 +87,5 @@ public class Main {
         System.out.println(Entropy.Shanon("first.txt", 2));
         System.out.print("Файл №2: ");
         System.out.println(Entropy.Shanon("second.txt", 2));
-    }
-
-    public static void displayLab2() throws IOException {
-        System.out.println("\nЛаб.раб. №2:");
-        FileGenerator.generateText("JaneEyre.txt");
-        FileGenerator.generateText("lab1Code.txt");
-
-        System.out.println("JaneEyre\n"
-                + "1 char = " + Entropy.Shanon("JaneEyre.txt.new", 1) + "\n"
-                + "2 char = " + Entropy.Shanon("JaneEyre.txt.new", 2) + " \n"
-                + "3 char = " + Entropy.Shanon("JaneEyre.txt.new", 3) + " \n");
-        System.out.println("lab1Code\n"
-                + "1 char = " + Entropy.Shanon("lab1Code.txt.new", 1) + " \n"
-                + "2 char = " + Entropy.Shanon("lab1Code.txt.new", 2) + " \n"
-                + "3 char = " + Entropy.Shanon("lab1Code.txt.new", 3) + " \n");
     }
 }
