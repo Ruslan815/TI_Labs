@@ -1,9 +1,7 @@
 package Lab1;
 
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Coding {
 
@@ -41,6 +39,7 @@ public class Coding {
 
         fano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len);    // Кодирование для 4 лабы
         printLab4Fano(charsFreq, file, fout, codes, len);
+        encodeFile(file, fout, charsFreq, codes);
 
         /*int[] m = new int[N - 1];
         ternaryEncoding1(charsFreq, 0, charsFreq.size() - 1, 0, codes, len, N, m);  // Кодирование для 5 лабы
@@ -92,23 +91,6 @@ public class Coding {
         return median;
     }
 
-    public static void printTable(LinkedHashMap<String, Float> charsFreq, BufferedWriter fout, int[][] codes, int[] len) throws IOException {
-        System.out.println("\nСимвол \t Вероятность \t  Длина \t Кодовое слово");
-        for (int i = 0; i < uniqueChars; i++) {
-            System.out.format("%3s%16.6f%10s", charsFreq.keySet().toArray()[i], charsFreq.values().toArray()[i], len[i]);
-            System.out.print("\t\t\t");
-            for (int j = 0; j < uniqueChars; j++) {
-                if (j < len[i] && codes[i][j] != -999) {
-                    fout.write(codes[i][j] + "");
-                    System.out.print(codes[i][j] + " ");
-                } else break;
-            }
-            System.out.println();
-        }
-        fout.flush();
-        fout.close();
-    }
-
     public static void printLab4Fano(LinkedHashMap<String, Float> charsFreq, String file, BufferedWriter fout, int[][] codes, int[] len) throws IOException {
         printTable(charsFreq, fout, codes, len);
 
@@ -120,6 +102,22 @@ public class Coding {
         float r = redundancy(middleLengthCodeword, entropy);
         System.out.printf("Избыточность кодирования: %12.6f\n", r);
         System.out.println();
+    }
+
+    public static void printTable(LinkedHashMap<String, Float> charsFreq, BufferedWriter fout, int[][] codes, int[] len) throws IOException {
+        System.out.println("\nСимвол \t Вероятность \t  Длина \t Кодовое слово");
+        for (int i = 0; i < uniqueChars; i++) {
+            System.out.format("%3s%16.6f%10s", charsFreq.keySet().toArray()[i], charsFreq.values().toArray()[i], len[i]);
+            System.out.print("\t\t\t");
+            for (int j = 0; j < uniqueChars; j++) {
+                if (j < len[i] && codes[i][j] != -999) {
+                    System.out.print(codes[i][j] + " ");
+                } else break;
+            }
+            System.out.println();
+        }
+        //fout.flush();
+        //fout.close();
     }
 
     public static float middleLengthCodeword(LinkedHashMap<String, Float> P, int[] len) {
@@ -134,6 +132,36 @@ public class Coding {
 
     public static float redundancy(float Lmid, float entropy) {
         return (Lmid - entropy);
+    }
+
+    public static void encodeFile(String inFile, BufferedWriter fout, LinkedHashMap<String, Float> charsFreq, int[][] codes) throws IOException {
+        // Fill list of codewords for characters
+        ArrayList<String> binaryCharsCodes = new ArrayList<>();
+        for (int i = 0; i < codes.length; i++) {
+            StringBuilder tempBinaryCode = new StringBuilder();
+            for (int j = 0; j < codes[i].length; j++) {
+                if (codes[i][j] != -999) {
+                    tempBinaryCode.append(codes[i][j]);
+                }
+            }
+            binaryCharsCodes.add(tempBinaryCode.toString());
+        }
+
+        // Read source file
+        File readFile = new File(inFile);
+        FileInputStream fin = new FileInputStream(readFile);
+        BufferedReader buf = new BufferedReader(new InputStreamReader((fin)));
+        String str = buf.readLine();
+
+        List<Object> listOfUniqueCharacters = Arrays.asList(charsFreq.keySet().toArray());
+
+        // Read character from source file and write codeword to result file
+        for (int i = 0; i < str.length(); i++) {
+            int characterIndex = listOfUniqueCharacters.indexOf(String.valueOf(str.charAt(i)));
+            fout.write(binaryCharsCodes.get(characterIndex));
+        }
+        fout.flush();
+        fout.close();
     }
 
     /*public static void ternaryEncodingMed(LinkedHashMap<String, Float> P, int L, int R, int N, int[] m) {

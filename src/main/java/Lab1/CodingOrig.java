@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.LinkedHashMap;
 
 /**
- * Этот класс в среднем выдаёт сжатие (энторию) на 4-5% лучше, чем класс Coding
+ * Немного другой алгоритм, чем в классе Coding
  */
 
 public class CodingOrig {
