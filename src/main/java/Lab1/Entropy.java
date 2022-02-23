@@ -22,12 +22,16 @@ public class Entropy {
             sum /= strLen;
         }
 
-        System.out.println("Unique symbols count = " + H.size());
+        //System.out.println("Unique symbols count = " + H.size());
         //System.out.println(H.entrySet());
 
         return sum;
     }
 
+    /**
+     * Returns HashMap contains pairs of <Some Character, Count Of This Character In Text>
+     * strLen - specifies length of some character (single character, a pair of characters, etc.)
+     */
     public static LinkedHashMap<String, Float> calculateCharsFrequency(String file, int strLen) throws IOException {
         File readFile = new File(file);
         FileInputStream fin = new FileInputStream(readFile);

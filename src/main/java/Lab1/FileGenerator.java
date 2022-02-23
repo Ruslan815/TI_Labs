@@ -4,6 +4,9 @@ import java.io.*;
 import java.util.Random;
 
 public class FileGenerator {
+    /**
+     * Generates a file of a given length from specified characters with probabilities
+     */
     public static void generateFile(String fileName, char[] uniqueChars, int[] probs, int textSizeInChars) throws IOException {
         File file = new File(fileName);
         FileOutputStream fileOutStream = new FileOutputStream(file);
@@ -31,15 +34,7 @@ public class FileGenerator {
         return probs.length - 1;
     }
 
-    public static String removeChar(String s, char c) {
-        StringBuilder r = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) != c) r.append(s.charAt(i));
-        }
-        return r.toString();
-    }
-
-    public static void generateText(String filename) throws IOException {
+    public static void deleteInvalidSymbolsFromFile(String filename) throws IOException {
         File fileIn = new File(filename);
         File fileOut = new File(filename + ".new");
         FileInputStream fin = new FileInputStream(fileIn);
@@ -59,24 +54,8 @@ public class FileGenerator {
                     newStr.append(tempSymbol);
                 }
             }
-
             fout.write(newStr.toString().getBytes());
         }
         fout.close();
     }
-
-    /*public static void genSourceFile(String filename) throws IOException {
-        File fileIn = new File(filename);
-        File fileOut = new File("sourceFile.txt");
-        FileInputStream fin = new FileInputStream(fileIn);
-        FileOutputStream fout = new FileOutputStream(fileOut);
-        BufferedReader buf = new BufferedReader(new InputStreamReader(fin));
-        String str = "";
-
-        while ((str = buf.readLine()) != null) {
-            fout.write(str.getBytes());
-        }
-
-        fout.close();
-    }*/
 }
