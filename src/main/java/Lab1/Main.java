@@ -18,7 +18,53 @@ public class Main {
 
         // displayLab1();
         // displayLab2();
-        displayLab3(file1, file2);
+        // displayLab3(file1, file2);
+        displayLab4(file1, file2);
+    }
+
+    public static void displayLab4(String file1, String file2) throws IOException {
+        System.out.println("\nЛаб.раб. №4:");
+
+        // First file
+        Coding.prepareFano(file1, 1);
+        System.out.println("File1\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon(file1 + ".enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon(file1 + ".enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon(file1 + ".enc", 3));
+        System.out.println("Теоретическая энтропия для 3 символов: " + Entropy.log2(3));
+        System.out.println();
+
+        // Second File
+        Coding.prepareFano(file2, 1);
+        System.out.println("File2\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon(file2 + ".enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon(file2 + ".enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon(file2 + ".enc", 3));
+        System.out.println("Теоретическая энтропия для 3 символов: " + Entropy.log2(3));
+        System.out.println();
+
+        // Jane Eyre
+        Coding.prepareFano("JaneEyre.txt.new", 1);
+        System.out.println("JaneEyre\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.new.enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 3));
+        System.out.println("Теоретическая энтропия для 3 символов: " + Entropy.log2(3));
+        System.out.println();
+
+
+        // Lab 1 Code
+        Coding.prepareFano("lab1Code.txt.new", 1);
+        System.out.println("lab1Code\n"
+                + "Энтропия для\n"
+                + " 1 символа: " + Entropy.Shanon("lab1Code.txt.new.enc", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("lab1Code.txt.new.enc", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("lab1Code.txt.new.enc", 3));
+        System.out.println("Теоретическая энтропия для 3 символов: " + Entropy.log2(3));
+        System.out.println();
     }
 
     public static void displayLab3(String file1, String file2) throws IOException {

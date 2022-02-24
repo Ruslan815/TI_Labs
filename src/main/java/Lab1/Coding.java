@@ -8,7 +8,6 @@ public class Coding {
     private static int uniqueChars; // Count of unique characters
 
     public static void prepareFano(String file, int strLen) throws IOException {
-        // int N = 3; // For Lab4
         LinkedHashMap<String, Float> charsFreq = Entropy.calculateCharsFrequency(file, strLen);
         File fileOut = new File(file + ".enc");
         BufferedWriter fout = new BufferedWriter(new FileWriter(fileOut));
@@ -37,14 +36,16 @@ public class Coding {
         System.out.println("Файл: " + file);
         System.out.println(charsFreq);
 
-        fano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len);    // Кодирование для 4 лабы
-        printLab4Fano(charsFreq, file, fout, codes, len);
+        /*fano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len);    // Кодирование для 3 лабы
+        printLab3Fano(charsFreq, file, codes, len);
+        encodeFile(file, fout, charsFreq, codes);*/
+
+        int base = 3;
+        int[] medians = new int[base - 1];
+        ternaryFano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len, base, medians);  // Кодирование для 4 лабы
+        printLab4Fano(charsFreq, file, codes, len);
+        //printTable(charsFreq, codes, len);
         encodeFile(file, fout, charsFreq, codes);
-
-        /*int[] m = new int[N - 1];
-        ternaryEncoding1(charsFreq, 0, charsFreq.size() - 1, 0, codes, len, N, m);  // Кодирование для 5 лабы
-        printTable(charsFreq, fout, codes, len);*/
-
     }
 
     public static void fano(LinkedHashMap<String, Float> charsFreq, int L, int R, int currCodewordLen, int[][] codes, int[] len) {
@@ -91,11 +92,11 @@ public class Coding {
         return median;
     }
 
-    public static void printLab4Fano(LinkedHashMap<String, Float> charsFreq, String file, BufferedWriter fout, int[][] codes, int[] len) throws IOException {
-        printTable(charsFreq, fout, codes, len);
+    public static void printLab3Fano(LinkedHashMap<String, Float> charsFreq, String file, int[][] codes, int[] len) throws IOException {
+        printTable(charsFreq, codes, len);
 
         float middleLengthCodeword = middleLengthCodeword(charsFreq, len);
-        float entropy = Entropy.Shanon(String.valueOf(file), 1); // ??? 5 ???
+        float entropy = Entropy.Shanon(String.valueOf(file), 1);
 
         System.out.println("Энтропия исходного файла:     " + entropy);
 
@@ -104,7 +105,7 @@ public class Coding {
         System.out.println();
     }
 
-    public static void printTable(LinkedHashMap<String, Float> charsFreq, BufferedWriter fout, int[][] codes, int[] len) throws IOException {
+    public static void printTable(LinkedHashMap<String, Float> charsFreq, int[][] codes, int[] len) throws IOException {
         System.out.println("\nСимвол \t Вероятность \t  Длина \t Кодовое слово");
         for (int i = 0; i < uniqueChars; i++) {
             System.out.format("%3s%16.6f%10s", charsFreq.keySet().toArray()[i], charsFreq.values().toArray()[i], len[i]);
@@ -130,8 +131,8 @@ public class Coding {
         return sum;
     }
 
-    public static float redundancy(float Lmid, float entropy) {
-        return (Lmid - entropy);
+    public static float redundancy(float middleLen, float entropy) {
+        return (middleLen - entropy);
     }
 
     public static void encodeFile(String inFile, BufferedWriter fout, LinkedHashMap<String, Float> charsFreq, int[][] codes) throws IOException {
@@ -164,63 +165,79 @@ public class Coding {
         fout.close();
     }
 
-    /*public static void ternaryEncodingMed(LinkedHashMap<String, Float> P, int L, int R, int N, int[] m) {
-        float sl = 0, sr = 0;
-        int temp_R = R, del = N - 1;
-        for (int k = N - 2; k >= 0; k--) {
-            sl = 0;
-            sr = 0;
-            for (int i = L; i < temp_R; i++)
-                sl += P.get(P.keySet().toArray()[i]);
-            sr = P.get(P.keySet().toArray()[temp_R]);
-            m[k] = temp_R;
+
+
+    public static void ternaryFano(LinkedHashMap<String, Float> charsFreq, int L, int R, int currCodewordLen, int[][] codes, int[] len, int base, int[] medians) {
+        if (L < R) {
+            ternaryMedian(charsFreq, L, R, base, medians);
+
+            int[] newMedians = new int[base - 1];
+            if (base - 1 >= 0) System.arraycopy(medians, 0, newMedians, 0, base - 1);
+
+            for (int i = L; i <= R; i++) {
+                codes[i][currCodewordLen] = getCode(i, base, medians);
+                len[i]++;
+            }
+            currCodewordLen++;
+
+            int l = L, r;
+            for (int j = 0; j < base - 1; j++) {
+                r = newMedians[j];
+                ternaryFano(charsFreq, l, r, currCodewordLen, codes, len, base, medians);
+                l = r + 1;
+            }
+            ternaryFano(charsFreq, newMedians[base - 2] + 1, R, currCodewordLen, codes, len, base, medians);
+        }
+
+    }
+
+    public static void ternaryMedian(LinkedHashMap<String, Float> charsFreq, int L, int R, int base, int[] medians) {
+        float sl, sr;
+        int temp_R = R, del = base - 1;
+        for (int k = base - 2; k >= 0; k--) {
+            sl = 0; sr = 0;
+            for (int i = L; i < temp_R; i++) {
+                sl += charsFreq.get(charsFreq.keySet().toArray()[i]);
+            }
+
+            sr = charsFreq.get(charsFreq.keySet().toArray()[temp_R]);
+            medians[k] = temp_R;
 
             while (sl / del >= sr) {
-                m[k]--;
-                sl -= P.get(P.keySet().toArray()[m[k]]);
-                sr += P.get(P.keySet().toArray()[m[k]]);
-                if (m[k] < 0) {
-                    m[k] = 0;
+                medians[k]--;
+                sl -= charsFreq.get(charsFreq.keySet().toArray()[medians[k]]);
+                sr += charsFreq.get(charsFreq.keySet().toArray()[medians[k]]);
+                if (medians[k] < 0) {
+                    medians[k] = 0;
                     break;
                 }
             }
             del--;
-            if (m[k] == 0)
+
+            if (medians[k] == 0) {
                 temp_R = 1;
-            else
-                temp_R = m[k] - 1;
-        }
-    }*/
-
-    /*public static void ternaryEncoding1(LinkedHashMap<String, Float> P, int L, int R, int k, int[][] codes, int[] len, int N, int[] m) {
-        if (L < R) {
-            ternaryEncodingMed(P, L, R, N, m);
-
-            int[] m1 = new int[N - 1];
-            if (N - 1 >= 0) System.arraycopy(m, 0, m1, 0, N - 1);
-
-            for (int i = L; i <= R; i++) {
-                codes[i][k] = get_code(i, N, m);
-                len[i]++;
             }
-            k++;
-
-            int l = L, r;
-            for (int j = 0; j < N - 1; j++) {
-                r = m1[j];
-                ternaryEncoding1(P, l, r, k, codes, len, N, m);
-                l = r + 1;
+            else {
+                temp_R = medians[k] - 1;
             }
-            ternaryEncoding1(P, m1[N - 2] + 1, R, k, codes, len, N, m);
         }
+    }
 
-    }*/
-
-    /*public static int get_code(int i, int N, int[] mid) {
-        for (int j = 0; j < N - 1; j++) {
-            if (i <= mid[j])
+    // Returns 0, 1, 2 depends on element position relative median position
+    public static int getCode(int i, int base, int[] medians) {
+        for (int j = 0; j < base - 1; j++) {
+            if (i <= medians[j]) {
                 return j;
+            }
         }
-        return N - 1;
-    }*/
+        return base - 1;
+    }
+
+    public static void printLab4Fano(LinkedHashMap<String, Float> charsFreq, String file, int[][] codes, int[] len) throws IOException {
+        printTable(charsFreq, codes, len);
+        middleLengthCodeword(charsFreq, len);
+        float entropy = Entropy.Shanon(String.valueOf(file), 1);
+        System.out.println("Энтропия исходного файла:     " + entropy);
+        System.out.println();
+    }
 }
