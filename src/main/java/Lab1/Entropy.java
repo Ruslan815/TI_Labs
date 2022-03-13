@@ -38,6 +38,11 @@ public class Entropy {
         BufferedReader buf = new BufferedReader(new InputStreamReader((fin)));
         String str = buf.readLine();
 
+        while (buf.ready()) {
+            str += buf.readLine();
+        }
+
+
         TreeMap<String, Float> P = new TreeMap<>();
         LinkedHashMap<String, Float> sortedMap = new LinkedHashMap<>();
 

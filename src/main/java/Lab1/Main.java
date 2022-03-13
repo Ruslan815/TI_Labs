@@ -18,8 +18,8 @@ public class Main {
 
         // displayLab1();
         // displayLab2();
-        // displayLab3(file1, file2);
-        displayLab4(file1, file2);
+        displayLab3(file1, file2);
+         //displayLab4(file1, file2);
     }
 
     public static void displayLab4(String file1, String file2) throws IOException {
@@ -46,12 +46,12 @@ public class Main {
         System.out.println();
 
         // Jane Eyre
-        Coding.prepareFano("JaneEyre.txt.new", 1);
+        Coding.prepareFano("JaneEyre.txt", 1);
         System.out.println("JaneEyre\n"
                 + "Энтропия для\n"
-                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.new.enc", 1) + "\n"
-                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 2) + " \n"
-                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 3));
+                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.enc2", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.enc2", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.enc2", 3));
         System.out.println("Теоретическая энтропия для 3 символов: " + Entropy.log2(3));
         System.out.println();
 
@@ -87,12 +87,12 @@ public class Main {
                 + "3 символов: " + Entropy.Shanon(file2 + ".enc", 3) + " \n");
 
         // Jane Eyre
-        Coding.prepareFano("JaneEyre.txt.new", 1);
+        Coding.prepareFano("JaneEyre.txt", 1);
         System.out.println("JaneEyre\n"
                 + "Энтропия для\n"
-                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.new.enc", 1) + "\n"
-                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 2) + " \n"
-                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.new.enc", 3) + " \n");
+                + " 1 символа: " + Entropy.Shanon("JaneEyre.txt.enc2", 1) + "\n"
+                + "2 символов: " + Entropy.Shanon("JaneEyre.txt.enc2", 2) + " \n"
+                + "3 символов: " + Entropy.Shanon("JaneEyre.txt.enc2", 3) + " \n");
 
 
         // Lab 1 Code

@@ -9,7 +9,9 @@ public class Coding {
 
     public static void prepareFano(String file, int strLen) throws IOException {
         LinkedHashMap<String, Float> charsFreq = Entropy.calculateCharsFrequency(file, strLen);
-        File fileOut = new File(file + ".enc");
+        System.out.println("SIZE: " + charsFreq.size());
+        System.out.println(Arrays.toString(charsFreq.entrySet().toArray()));
+        File fileOut = new File(file + ".enc2");
         BufferedWriter fout = new BufferedWriter(new FileWriter(fileOut));
 
         // Filling matrix of codes with default value
@@ -36,16 +38,15 @@ public class Coding {
         System.out.println("Файл: " + file);
         System.out.println(charsFreq);
 
-        /*fano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len);    // Кодирование для 3 лабы
+        fano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len);    // Кодирование для 3 лабы
         printLab3Fano(charsFreq, file, codes, len);
-        encodeFile(file, fout, charsFreq, codes);*/
+        encodeFile(file, fout, charsFreq, codes);
 
-        int base = 3;
+        /*int base = 3;
         int[] medians = new int[base - 1];
         ternaryFano(charsFreq, 0, charsFreq.size() - 1, 0, codes, len, base, medians);  // Кодирование для 4 лабы
         printLab4Fano(charsFreq, file, codes, len);
-        //printTable(charsFreq, codes, len);
-        encodeFile(file, fout, charsFreq, codes);
+        encodeFile(file, fout, charsFreq, codes);*/
     }
 
     public static void fano(LinkedHashMap<String, Float> charsFreq, int L, int R, int currCodewordLen, int[][] codes, int[] len) {
@@ -195,7 +196,7 @@ public class Coding {
         float sl, sr;
         int temp_R = R, del = base - 1;
         for (int k = base - 2; k >= 0; k--) {
-            sl = 0; sr = 0;
+            sl = 0;
             for (int i = L; i < temp_R; i++) {
                 sl += charsFreq.get(charsFreq.keySet().toArray()[i]);
             }
@@ -216,8 +217,7 @@ public class Coding {
 
             if (medians[k] == 0) {
                 temp_R = 1;
-            }
-            else {
+            } else {
                 temp_R = medians[k] - 1;
             }
         }
